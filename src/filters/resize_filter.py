@@ -3,7 +3,8 @@ from .base_filter import Filter
 
 
 class ResizeFilter(Filter):
-    def __init__(self, scale_factor=0.5):
+    def __init__(self, inbound_queue, outbound_queue, scale_factor=0.5):
+        super().__init__(inbound_queue, outbound_queue)
         self.scale_factor = scale_factor
 
     def process(self, frame):
