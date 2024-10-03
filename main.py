@@ -23,7 +23,7 @@ def run_app(args):
     run_pipeline()
     try:
         while True:
-            frame = video_stream.stream()
+            frame = video_stream.next_frame()
             source_pipe.put(frame)
             processed_frame = sink_pipe.get()
             if processed_frame is None:
