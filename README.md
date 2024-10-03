@@ -21,22 +21,29 @@ This project implements the pipes-and-filters architectural pattern to process v
 
 ```
 video_pipeline/
-├── filters/
-│   ├── __init__.py
-│   ├── base_filter.py
-│   ├── grayscale_filter.py
-│   ├── mirror_filter.py
-│   ├── resize_filter.py
-│   └── edge_detection_filter.py
-├── pipeline.py
+├── README.md
+├── filters
 ├── main.py
+├── parse_args.py
 ├── requirements.txt
-└── README.md
+└── src
+    ├── __init__.py
+    ├── filters
+    │   ├── __init__.py
+    │   ├── base_filter.py
+    │   ├── edge_detection_filter.py
+    │   ├── grayscale_filter.py
+    │   ├── mirror_filter.py
+    │   └── resize_filter.py
+    ├── pipeline.py
+    └── video_stream.py
 ```
 
 
-- **filters/**: Contains individual filter classes.
-- **pipeline.py**: Contains the `Pipeline` class.
+- **src/filters/**: Contains individual filter classes.
+- **src/pipeline.py**: Contains the `Pipeline` class.
+- **parse_args.py**: Handling the passed arguments.
+- **video_stream.py**: Contains VideoStream for processing frames.
 - **main.py**: The main application script.
 - **requirements.txt**: Python dependencies.
 - **README.md**: Project documentation.
