@@ -8,7 +8,7 @@ class VideoStream:
         if not self.capture.isOpened():
             raise RuntimeError("Error: Unable to open video source.")
         
-    def stream(self) -> cv2.typing.MatLike:
+    def next_frame(self) -> cv2.typing.MatLike:
         ret, frame = self.capture.read()
         if not ret:
             raise RuntimeError("Error Capturing the next frame")

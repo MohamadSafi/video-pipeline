@@ -1,8 +1,10 @@
-class Pipeline:
-    def __init__(self, filters):
-        self.filters = filters
+from src.filters import Filter
 
-    def process(self, data):
+
+class Pipeline:
+    def __init__(self, filters: Filter):
+        self.filters = filters
+        
+    def run_background(self):
         for filter in self.filters:
-            data = filter.process(data)
-        return data
+            filter.run()
