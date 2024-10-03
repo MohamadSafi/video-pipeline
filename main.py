@@ -3,20 +3,10 @@ from parse_args import parse_args
 from src import Pipeline, VideoStream
 from src.filters import GrayscaleFilter, MirrorFilter, ResizeFilter, EdgeDetectionFilter
 from multiprocessing import Queue
-import threading
 
 source_pipe = Queue()
 sink_pipe = Queue()
 
-def sink_thread(sink_pipe):
-    while True:
-        processed_frame = sink_pipe.get()
-        if processed_frame is None:
-            break
-        cv2.imshow("Processed Video", processed_frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-        
 def run_pipeline():
     mirror_queue, resize_queue, edge_detection_queue = Queue(), Queue(), Queue()
     filters = [
@@ -30,11 +20,18 @@ def run_pipeline():
 
 def run_app(args):
     video_stream = VideoStream(args.video)
-    threading.Thread(target=sink_thread, args=[sink_pipe]).start()
     run_pipeline()
     while True:
         frame = video_stream.stream()
         source_pipe.put(frame)
+        processed_frame = sink_pipe.get()
+        if processed_frame is None:
+            break
+        cv2.imshow("Processed Video", processed_frame)
+        key = cv2.waitKey(1) & 0xFF
+        if key == ord('q'):
+            cv2.destroyAllWindows()
+            return
 
 def main():
     args = parse_args()
