@@ -100,3 +100,11 @@ python main.py --video path/to/your/video.mp4
 
     - Description: Highlights edges using the Canny edge detection algorithm.
     - File: `filters/edge_detection_filter.py`
+  
+## Demo Video
+
+
+<a href="https://youtu.be/iYwJzqkvv0A">
+    <img src="https://i.ibb.co/CQfZJ39/demo.png" alt="Demo video" width="100" />
+</a>
+
