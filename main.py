@@ -25,6 +25,7 @@ def run_app(args):
         while True:
             frame = video_stream.next_frame()
             source_pipe.put(frame)
+            cv2.imshow("Input Video", frame)
             processed_frame = sink_pipe.get()
             if processed_frame is None:
                 break
