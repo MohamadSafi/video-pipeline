@@ -9,10 +9,6 @@ This project implements the pipes-and-filters architectural pattern to process v
 - [Installation](#installation)
 - [Usage](#usage)
 - [Available Filters](#available-filters)
-- [Customization](#customization)
-- [Contributing](#contributing)
-- [References](#references)
-- [License](#license)
 
 ## Features
 
