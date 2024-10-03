@@ -1,11 +1,10 @@
 import cv2
 import argparse
-from filters import GrayscaleFilter, MirrorFilter, ResizeFilter, EdgeDetectionFilter
-from pipeline import Pipeline
+from src.filters import GrayscaleFilter, MirrorFilter, ResizeFilter, EdgeDetectionFilter
+from src import Pipeline, VideoStream
 
 
-def main():
-    # Parsing the command line args
+def parse_args():
     parser = argparse.ArgumentParser(
         description="Real-Time Video Processing with Pipes-and-Filters Pattern"
     )
@@ -13,49 +12,39 @@ def main():
         "--video",
         type=str,
         help="Path to the video file. If not provided, webcam will be used.",
+        default=0
     )
     args = parser.parse_args()
-
-    # if the video arg was not provided use the webcam
-    if args.video:
-        video_source = args.video
-        print(f"Using video file: {video_source}")
+    if isinstance(args.video, str):
+        print(f"Using video file: {args.video}")
     else:
-        video_source = 0
         print("Using webcam as video source.")
+    return args
 
-    # Initialize video capture
-    cap = cv2.VideoCapture(video_source)
-
-    if not cap.isOpened():
-        print("Error: Unable to open video source.")
-        return
-
-    # Setting the filters
+def run_app(args):
+    video_stream = VideoStream(args.video)
     filters = [
         GrayscaleFilter(),
         MirrorFilter(),
         ResizeFilter(scale_factor=0.5),
         EdgeDetectionFilter(),
     ]
-
-    # Creating the pipeline
     pipeline = Pipeline(filters)
-
     while True:
-        ret, frame = cap.read()
-        if not ret:
-            print("End of video stream or error.")
+        frame = video_stream.stream()
+        processed_frame = pipeline.process(frame)
+        cv2.imshow("Processed Video", processed_frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
-        # Processing frame through the pipeline
-        processed_frame = pipeline.process(frame)
-
-        # Displaying the processed frame
-        cv2.imshow("Processed Video", processed_frame)
-
-    cap.release()
-    cv2.destroyAllWindows()
+def main():
+    args = parse_args()
+    try:
+        run_app(args)
+    except Exception as e:
+        print(f"An error occurred: {e}")
+    finally:
+        cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
