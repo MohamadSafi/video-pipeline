@@ -21,17 +21,21 @@ def run_pipeline():
 def run_app(args):
     video_stream = VideoStream(args.video)
     run_pipeline()
-    while True:
-        frame = video_stream.stream()
-        source_pipe.put(frame)
-        processed_frame = sink_pipe.get()
-        if processed_frame is None:
-            break
-        cv2.imshow("Processed Video", processed_frame)
-        key = cv2.waitKey(1) & 0xFF
-        if key == ord('q'):
-            cv2.destroyAllWindows()
-            return
+    try:
+        while True:
+            frame = video_stream.stream()
+            source_pipe.put(frame)
+            processed_frame = sink_pipe.get()
+            if processed_frame is None:
+                break
+            cv2.imshow("Processed Video", processed_frame)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+    except KeyboardInterrupt:
+        print("Keyboard interrupt detected. Shutting down...")
+    finally:
+        cv2.destroyAllWindows()
+        del video_stream
 
 def main():
     args = parse_args()
@@ -41,7 +45,6 @@ def main():
         print(f"An error occurred: {e}")
     finally:
         cv2.destroyAllWindows()
-
 
 if __name__ == "__main__":
     main()

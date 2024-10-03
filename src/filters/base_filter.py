@@ -7,12 +7,17 @@ class Filter:
         
     def run(self):
         def process_thread():
-            while True:
-                data = self.inbound_queue.get()
-                if data is None:
-                    break
-                processed_data = self.process(data)
-                self.outbound_queue.put(processed_data)
+            try:
+                while True:
+                    data = self.inbound_queue.get()
+                    if data is None:
+                        break
+                    processed_data = self.process(data)
+                    self.outbound_queue.put(processed_data)
+            except KeyboardInterrupt:
+                print("KeyboardInterrupt detected. Stopping filter.")
+            finally:
+                self.inbound_queue.task_done()
         self.thread = threading.Thread(target=process_thread)
         self.thread.start()
     

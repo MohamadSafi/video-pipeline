@@ -1,4 +1,4 @@
-from src.filters import GrayscaleFilter, MirrorFilter, ResizeFilter, EdgeDetectionFilter, Filter
+from src.filters import Filter
 
 
 class Pipeline:
