@@ -1,7 +1,8 @@
 import threading
+from multiprocessing import Queue
 
 class Filter:
-    def __init__(self, inbound_queue, outbound_queue):
+    def __init__(self, inbound_queue: Queue, outbound_queue: Queue):
         self.inbound_queue = inbound_queue
         self.outbound_queue = outbound_queue
         
